@@ -24,7 +24,7 @@ function App() {
 
   useEffect(() => {
     draw(canvasRef.current!)
-    draw(canvasRef2.current!)
+    drawBresenhamsLine(canvasRef2.current!)
   }, [points])
 
   const draw = (canvas: HTMLCanvasElement) => {
@@ -43,6 +43,39 @@ function App() {
       context.moveTo(points[0].x, points[0].y);
       context.lineTo(points[1].x, points[1].y);
       context.stroke();
+    }
+  }
+
+
+  const drawBresenhamsLine = (canvas: HTMLCanvasElement) => {
+    const context = canvas.getContext("2d")!;
+    context.clearRect(0, 0, windowSplitSize.width, windowSplitSize.height);
+    points.forEach((point) => {
+      if (point) {
+        context.fillStyle = "#000000";
+        context.beginPath();
+        context.arc(point.x, point.y, 5, 0, 2 * Math.PI);
+        context.fill();
+      }
+    });
+    if (points.length === 2) {
+      const [point0, point1] = points
+      const deltaX = point1.x - point0.x
+      const deltaY = point1.y - point0.y
+      let y = point0.y;
+      let error = 0;
+      let deltaError = Math.abs(deltaY / deltaX)
+      for(let x = point0.x; x < point1.x; x++){
+        context.fillStyle = "#000000";
+        context.beginPath();
+        context.arc(x, y, 1, 0, 2 * Math.PI);
+        context.fill();
+        error += deltaError;
+        if(error >= 0.5){
+          y += 1;
+          error -= 1.0;
+        }
+      }
     }
   }
 
