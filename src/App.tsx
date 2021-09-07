@@ -65,14 +65,14 @@ function App() {
       let y = point0.y;
       let error = 0;
       let deltaError = Math.abs(deltaY / deltaX)
-      for(let x = point0.x; x < point1.x; x++){
+      for(let x = point0.x; x < point1.x; x += 5){
         context.fillStyle = "#000000";
         context.beginPath();
         context.arc(x, y, 1, 0, 2 * Math.PI);
         context.fill();
         error += deltaError;
         if(error >= 0.5){
-          y += 1;
+          y += 5;
           error -= 1.0;
         }
       }
